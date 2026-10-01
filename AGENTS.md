@@ -34,5 +34,6 @@ Usar **yarn** (existe `yarn.lock`): `yarn install`, `yarn start`, `yarn build`
   rodar `git status` antes de criar arquivos
 
 ## Commit Attribution
+
 AI commits MUST include:
-`Co-Authored-By: <modelo do agente> <noreply@example.com>`
+`Co-Authored-By: https://github.com/PedroZef/PedroZef`
