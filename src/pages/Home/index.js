@@ -63,11 +63,26 @@ function App() {
         setRepoFilter('');
 
         try {
-            const userDataResponse = await fetch(`https://api.github.com/users/${cleanUser}`);
-            if (!userDataResponse.ok) {
+            const encodedUser = encodeURIComponent(cleanUser);
+            const userDataResponse = await fetch(`https://api.github.com/users/${encodedUser}`);
+            if (userDataResponse.status === 404) {
                 setCurrentUser(null);
                 setRepos([]);
                 setErrorMessage('Usuário não encontrado!');
+                setIsLoading(false);
+                return;
+            }
+            if (userDataResponse.status === 403) {
+                setCurrentUser(null);
+                setRepos([]);
+                setErrorMessage('Limite de requisições da API do GitHub atingido para o seu IP. Tente novamente mais tarde.');
+                setIsLoading(false);
+                return;
+            }
+            if (!userDataResponse.ok) {
+                setCurrentUser(null);
+                setRepos([]);
+                setErrorMessage('Erro ao consultar a API do GitHub. Tente novamente mais tarde.');
                 setIsLoading(false);
                 return;
             }
@@ -76,7 +91,7 @@ function App() {
             const { avatar_url, name, login, bio } = newUser;
             setCurrentUser({ avatar_url, name: name || login, login, bio });
 
-            const reposResponse = await fetch(`https://api.github.com/users/${cleanUser}/repos?sort=updated&per_page=100`);
+            const reposResponse = await fetch(`https://api.github.com/users/${encodedUser}/repos?sort=updated&per_page=100`);
             if (reposResponse.ok) {
                 const newRepos = await reposResponse.json();
                 setRepos(Array.isArray(newRepos) ? newRepos : []);
