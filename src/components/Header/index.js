@@ -8,10 +8,10 @@ const Header = ({ themeMode, onToggleTheme }) => {
             {onToggleTheme && (
                 <ThemeToggleButton
                     onClick={onToggleTheme}
-                    aria-label="Alternar tema claro e escuro"
-                    title={`Alternar para modo ${themeMode === 'dark' ? 'claro' : 'escuro'}`}
+                    aria-label={`Alternar para tema ${themeMode === 'dark' ? 'claro' : 'escuro'}`}
+                    title={`Alternar para tema ${themeMode === 'dark' ? 'claro' : 'escuro'}`}
                 >
-                    {themeMode === 'dark' ? '☀️ Light' : '🌙 Dark'}
+                    {themeMode === 'dark' ? '☀️' : '🌙'}
                 </ThemeToggleButton>
             )}
         </HeaderContainer>

@@ -28,33 +28,35 @@ export const ThemeToggleButton = styled.button`
     right: 24px;
     top: 50%;
     transform: translateY(-50%);
-    background-color: #ffd700;
-    color: #1d2128;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #79c0ff;
+    color: #0d1117;
     border: none;
-    border-radius: 20px;
-    padding: 8px 16px;
-    font-size: 13px;
-    font-weight: 700;
+    padding: 0;
+    font-size: 18px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
     box-shadow: 0 0 14px rgba(83, 155, 245, 0.85), 0 2px 6px rgba(0, 0, 0, 0.25);
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 
     &:hover {
-        background-color: #ffcc00;
-        transform: translateY(-50%) scale(1.05);
+        background-color: #a5d6ff;
+        transform: translateY(-50%) scale(1.1);
         box-shadow: 0 0 20px rgba(83, 155, 245, 1), 0 4px 10px rgba(0, 0, 0, 0.35);
     }
 
     &:active {
-        transform: translateY(-50%) scale(0.98);
+        transform: translateY(-50%) scale(0.95);
     }
 
     @media (max-width: 480px) {
-        padding: 6px 10px;
-        font-size: 12px;
-        right: 12px;
+        width: 34px;
+        height: 34px;
+        font-size: 16px;
+        right: 14px;
     }
 `;
