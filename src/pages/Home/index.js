@@ -1,4 +1,6 @@
-import { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
+import { ThemeProvider } from 'styled-components';
+import { darkTheme, lightTheme, GlobalStyle } from '../../styles';
 import { Header } from '../../components/Header';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
@@ -32,6 +34,25 @@ function App() {
     const [repoFilter, setRepoFilter] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [themeMode, setThemeMode] = useState(() => {
+        try {
+            return localStorage.getItem('gitfind_theme') || 'dark';
+        } catch (e) {
+            return 'dark';
+        }
+    });
+
+    const toggleTheme = () => {
+        const nextTheme = themeMode === 'dark' ? 'light' : 'dark';
+        setThemeMode(nextTheme);
+        try {
+            localStorage.setItem('gitfind_theme', nextTheme);
+        } catch (e) {
+            // ignora se localStorage não estiver disponível
+        }
+    };
+
+    const currentTheme = themeMode === 'dark' ? darkTheme : lightTheme;
 
     const handleGetData = async () => {
         const cleanUser = user.trim().replace(/^@/, '');
@@ -86,86 +107,89 @@ function App() {
     }, [repos, repoFilter]);
 
     return (
-        <Container>
-            <Header />
-            <BackgroundLogo src={gitlogo} alt="GitHub Octocat Logo" />
-            <Content>
-                <SearchBar>
-                    <Input
-                        name="usuario"
-                        value={user}
-                        onChange={(event) => setUser(event.target.value)}
-                        onKeyDown={handleKeyDown}
-                        placeholder="@usuario"
-                        aria-label="Buscar usuário no GitHub"
-                    />
-                    <Button onClick={handleGetData} disabled={isLoading}>
-                        {isLoading ? 'Buscando...' : 'Buscar'}
-                    </Button>
-                </SearchBar>
+        <ThemeProvider theme={currentTheme}>
+            <GlobalStyle />
+            <Container>
+                <Header themeMode={themeMode} onToggleTheme={toggleTheme} />
+                <BackgroundLogo src={gitlogo} alt="GitHub Octocat Logo" />
+                <Content>
+                    <SearchBar>
+                        <Input
+                            name="usuario"
+                            value={user}
+                            onChange={(event) => setUser(event.target.value)}
+                            onKeyDown={handleKeyDown}
+                            placeholder="@usuario"
+                            aria-label="Buscar usuário no GitHub"
+                        />
+                        <Button onClick={handleGetData} disabled={isLoading}>
+                            {isLoading ? 'Buscando...' : 'Buscar'}
+                        </Button>
+                    </SearchBar>
 
-                {errorMessage && (
-                    <MessageAlert $error>{errorMessage}</MessageAlert>
-                )}
+                    {errorMessage && (
+                        <MessageAlert $error>{errorMessage}</MessageAlert>
+                    )}
 
-                {currentUser && (
-                    <>
-                        <ProfileCard>
-                            <ProfileHeader>
-                                <Avatar
-                                    src={currentUser.avatar_url}
-                                    alt={`Avatar de ${currentUser.name}`}
-                                />
-                                <ProfileInfo>
-                                    <ProfileName>{currentUser.name}</ProfileName>
-                                    <ProfileLogin>@{currentUser.login}</ProfileLogin>
-                                    <ProfileBio>
-                                        {currentUser.bio || 'Este usuário não possui biografia.'}
-                                    </ProfileBio>
-                                </ProfileInfo>
-                            </ProfileHeader>
-                            <ProfileDivider />
-                        </ProfileCard>
-
-                        <ReposSection>
-                            <ReposTitle>Repositórios</ReposTitle>
-
-                            {repos.length > 0 && (
-                                <FilterWrapper>
-                                    <Input
-                                        name="filtro-repos"
-                                        value={repoFilter}
-                                        onChange={(event) => setRepoFilter(event.target.value)}
-                                        placeholder="Filtrar repositórios de interesse..."
-                                        aria-label="Filtrar repositórios de interesse"
+                    {currentUser && (
+                        <>
+                            <ProfileCard>
+                                <ProfileHeader>
+                                    <Avatar
+                                        src={currentUser.avatar_url}
+                                        alt={`Avatar de ${currentUser.name}`}
                                     />
-                                </FilterWrapper>
-                            )}
+                                    <ProfileInfo>
+                                        <ProfileName>{currentUser.name}</ProfileName>
+                                        <ProfileLogin>@{currentUser.login}</ProfileLogin>
+                                        <ProfileBio>
+                                            {currentUser.bio || 'Este usuário não possui biografia.'}
+                                        </ProfileBio>
+                                    </ProfileInfo>
+                                </ProfileHeader>
+                                <ProfileDivider />
+                            </ProfileCard>
 
-                            {filteredRepos.length > 0 ? (
-                                filteredRepos.map((repo) => (
-                                    <ItemList
-                                        key={repo.id}
-                                        title={repo.name}
-                                        description={repo.description}
-                                        link={repo.html_url}
-                                    />
-                                ))
-                            ) : repos.length > 0 ? (
-                                <EmptyReposMessage>
-                                    Nenhum repositório encontrado com o termo pesquisado.
-                                </EmptyReposMessage>
-                            ) : (
-                                <EmptyReposMessage>
-                                    Este usuário não possui repositórios públicos.
-                                </EmptyReposMessage>
-                            )}
-                        </ReposSection>
-                    </>
-                )}
-            </Content>
-            <Footer />
-        </Container>
+                            <ReposSection>
+                                <ReposTitle>Repositórios</ReposTitle>
+
+                                {repos.length > 0 && (
+                                    <FilterWrapper>
+                                        <Input
+                                            name="filtro-repos"
+                                            value={repoFilter}
+                                            onChange={(event) => setRepoFilter(event.target.value)}
+                                            placeholder="Filtrar repositórios de interesse..."
+                                            aria-label="Filtrar repositórios de interesse"
+                                        />
+                                    </FilterWrapper>
+                                )}
+
+                                {filteredRepos.length > 0 ? (
+                                    filteredRepos.map((repo) => (
+                                        <ItemList
+                                            key={repo.id}
+                                            title={repo.name}
+                                            description={repo.description}
+                                            link={repo.html_url}
+                                        />
+                                    ))
+                                ) : repos.length > 0 ? (
+                                    <EmptyReposMessage>
+                                        Nenhum repositório encontrado com o termo pesquisado.
+                                    </EmptyReposMessage>
+                                ) : (
+                                    <EmptyReposMessage>
+                                        Este usuário não possui repositórios públicos.
+                                    </EmptyReposMessage>
+                                )}
+                            </ReposSection>
+                        </>
+                    )}
+                </Content>
+                <Footer />
+            </Container>
+        </ThemeProvider>
     );
 }
 

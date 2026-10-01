@@ -24,7 +24,7 @@ export const ItemDescription = styled.p`
 `;
 
 export const Divider = styled.hr`
-    background-color: rgba(229, 229, 229, 0.2);
+    background-color: ${({ theme }) => theme.divider || 'rgba(229, 229, 229, 0.2)'};
     border: none;
     height: 1px;
     margin: 16px 0;
