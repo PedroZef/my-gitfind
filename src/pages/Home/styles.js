@@ -120,3 +120,29 @@ export const MessageAlert = styled.div`
     font-size: 15px;
     text-align: center;
 `;
+
+export const ReposSection = styled.section`
+    width: 100%;
+    margin-top: 10px;
+`;
+
+export const ReposTitle = styled.h3`
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 24px;
+`;
+
+export const FilterWrapper = styled.div`
+    width: 100%;
+    margin-bottom: 24px;
+`;
+
+export const EmptyReposMessage = styled.p`
+    color: #999999;
+    font-size: 15px;
+    text-align: center;
+    margin: 32px 0;
+`;
+

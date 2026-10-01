@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Header } from '../../components/Header';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
+import { ItemList } from '../../components/ItemList';
+import { Footer } from '../../components/Footer';
 import gitlogo from '../../assets/github.png';
 import {
     Container,
@@ -16,13 +18,18 @@ import {
     ProfileLogin,
     ProfileBio,
     ProfileDivider,
-    MessageAlert
+    MessageAlert,
+    ReposSection,
+    ReposTitle,
+    FilterWrapper,
+    EmptyReposMessage
 } from './styles';
 
 function App() {
     const [user, setUser] = useState('');
     const [currentUser, setCurrentUser] = useState(null);
     const [repos, setRepos] = useState([]);
+    const [repoFilter, setRepoFilter] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
 
@@ -32,6 +39,7 @@ function App() {
 
         setIsLoading(true);
         setErrorMessage(null);
+        setRepoFilter('');
 
         try {
             const userDataResponse = await fetch(`https://api.github.com/users/${cleanUser}`);
@@ -67,6 +75,16 @@ function App() {
         }
     };
 
+    const filteredRepos = useMemo(() => {
+        if (!repoFilter.trim()) return repos;
+        const term = repoFilter.toLowerCase();
+        return repos.filter(
+            (repo) =>
+                repo.name?.toLowerCase().includes(term) ||
+                repo.description?.toLowerCase().includes(term)
+        );
+    }, [repos, repoFilter]);
+
     return (
         <Container>
             <Header />
@@ -91,24 +109,62 @@ function App() {
                 )}
 
                 {currentUser && (
-                    <ProfileCard>
-                        <ProfileHeader>
-                            <Avatar
-                                src={currentUser.avatar_url}
-                                alt={`Avatar de ${currentUser.name}`}
-                            />
-                            <ProfileInfo>
-                                <ProfileName>{currentUser.name}</ProfileName>
-                                <ProfileLogin>@{currentUser.login}</ProfileLogin>
-                                <ProfileBio>
-                                    {currentUser.bio || 'Este usuário não possui biografia.'}
-                                </ProfileBio>
-                            </ProfileInfo>
-                        </ProfileHeader>
-                        <ProfileDivider />
-                    </ProfileCard>
+                    <>
+                        <ProfileCard>
+                            <ProfileHeader>
+                                <Avatar
+                                    src={currentUser.avatar_url}
+                                    alt={`Avatar de ${currentUser.name}`}
+                                />
+                                <ProfileInfo>
+                                    <ProfileName>{currentUser.name}</ProfileName>
+                                    <ProfileLogin>@{currentUser.login}</ProfileLogin>
+                                    <ProfileBio>
+                                        {currentUser.bio || 'Este usuário não possui biografia.'}
+                                    </ProfileBio>
+                                </ProfileInfo>
+                            </ProfileHeader>
+                            <ProfileDivider />
+                        </ProfileCard>
+
+                        <ReposSection>
+                            <ReposTitle>Repositórios</ReposTitle>
+
+                            {repos.length > 0 && (
+                                <FilterWrapper>
+                                    <Input
+                                        name="filtro-repos"
+                                        value={repoFilter}
+                                        onChange={(event) => setRepoFilter(event.target.value)}
+                                        placeholder="Filtrar repositórios de interesse..."
+                                        aria-label="Filtrar repositórios de interesse"
+                                    />
+                                </FilterWrapper>
+                            )}
+
+                            {filteredRepos.length > 0 ? (
+                                filteredRepos.map((repo) => (
+                                    <ItemList
+                                        key={repo.id}
+                                        title={repo.name}
+                                        description={repo.description}
+                                        link={repo.html_url}
+                                    />
+                                ))
+                            ) : repos.length > 0 ? (
+                                <EmptyReposMessage>
+                                    Nenhum repositório encontrado com o termo pesquisado.
+                                </EmptyReposMessage>
+                            ) : (
+                                <EmptyReposMessage>
+                                    Este usuário não possui repositórios públicos.
+                                </EmptyReposMessage>
+                            )}
+                        </ReposSection>
+                    </>
                 )}
             </Content>
+            <Footer />
         </Container>
     );
 }

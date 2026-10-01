@@ -84,4 +84,77 @@ describe('Home Page - Busca e Perfil', () => {
             expect(screen.getByText('Usuário não encontrado!')).toBeInTheDocument();
         });
     });
+
+    it('deve listar os repositórios e permitir filtrar por repositórios de interesse', async () => {
+        const mockUser = {
+            name: 'Pablo Henrique',
+            login: 'pablohdev',
+            avatar_url: 'https://avatars.githubusercontent.com/u/123456?v=4',
+            bio: 'Full Stack Developer'
+        };
+
+        const mockRepos = [
+            {
+                id: 1,
+                name: 'fisiotheapp-challenge',
+                description: 'Desafio React Native',
+                html_url: 'https://github.com/pablohdev/fisiotheapp-challenge'
+            },
+            {
+                id: 2,
+                name: 'my-gitfind',
+                description: 'Projeto busca github',
+                html_url: 'https://github.com/pablohdev/my-gitfind'
+            },
+            {
+                id: 3,
+                name: 'api-nodejs',
+                description: 'Backend em Express',
+                html_url: 'https://github.com/pablohdev/api-nodejs'
+            }
+        ];
+
+        jest.spyOn(global, 'fetch').mockImplementation((url) => {
+            if (url.includes('/repos')) {
+                return Promise.resolve({
+                    ok: true,
+                    json: () => Promise.resolve(mockRepos)
+                });
+            }
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve(mockUser)
+            });
+        });
+
+        render(<App />);
+
+        const inputUser = screen.getByPlaceholderText('@usuario');
+        const button = screen.getByRole('button', { name: /buscar/i });
+
+        fireEvent.change(inputUser, { target: { value: 'pablohdev' } });
+        fireEvent.click(button);
+
+        await waitFor(() => {
+            expect(screen.getByRole('heading', { level: 3, name: 'Repositórios' })).toBeInTheDocument();
+        });
+
+        // Verifica renderização inicial de todos os repositórios
+        expect(screen.getByText('fisiotheapp-challenge')).toBeInTheDocument();
+        expect(screen.getByText('my-gitfind')).toBeInTheDocument();
+        expect(screen.getByText('api-nodejs')).toBeInTheDocument();
+
+        // Filtra por termo de interesse
+        const filterInput = screen.getByPlaceholderText('Filtrar repositórios de interesse...');
+        fireEvent.change(filterInput, { target: { value: 'gitfind' } });
+
+        expect(screen.getByText('my-gitfind')).toBeInTheDocument();
+        expect(screen.queryByText('fisiotheapp-challenge')).not.toBeInTheDocument();
+        expect(screen.queryByText('api-nodejs')).not.toBeInTheDocument();
+
+        // Filtro sem correspondência
+        fireEvent.change(filterInput, { target: { value: 'termoinexistente' } });
+        expect(screen.getByText('Nenhum repositório encontrado com o termo pesquisado.')).toBeInTheDocument();
+    });
 });
+
