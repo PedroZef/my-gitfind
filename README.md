@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# GitFind 🔍
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicação web desenvolvida em **React 19** e **JavaScript Moderno** com estilização via **styled-components** para buscar perfis de usuários no GitHub, exibir suas informações detalhadas e listar seus repositórios públicos com filtro dinâmico de repositórios de interesse em tempo real.
 
-## Available Scripts
+O projeto foi construído seguindo rigorosamente a fonte da verdade visual contida em `docs/GitFind.png`.
 
-In the project directory, you can run:
+---
 
-### `yarn start`
+## 🎯 Objetivo do Projeto
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Tema Escuro & Identidade Visual**: Paleta de cores moderna (`#1D2128`, `#2D333B`, `#539BF5`, `#999999`) e layout com a marca d'água decorativa do Octocat do GitHub.
+- **Busca de Usuários**: Campo de pesquisa com formato pílula para inserção de `@usuario` com acionamento via botão "Buscar" ou tecla `Enter`.
+- **Card de Perfil**: Exibição do avatar circular, nome completo, `@handle`, biografia e linha divisória horizontal.
+- **Repositórios de Interesse**: Listagem completa dos repositórios públicos com título em link azul direcionando ao repositório no GitHub (`target="_blank" rel="noreferrer"`), descrição e um campo de filtro local em tempo real (`useMemo`) para encontrar rapidamente repositórios pelo nome ou tecnologia.
+- **Tratamento de Estados**: Feedback visual de carregamento ("Buscando...") e mensagens amigáveis para usuários inexistentes (HTTP 404) ou sem repositórios públicos.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `yarn test`
+## ⚡ Workflow de Desenvolvimento (Superpowers)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+O desenvolvimento seguiu rigorosamente o fluxo orientado a boas práticas e engenharia de software descrito nas diretrizes de agentes (`AGENTS.md` e `SKILLS.md`):
 
-### `yarn build`
+1. **`Brainstorming`**: Entendimento aprofundado dos requisitos, definição de arquitetura modular e aprovação prévia do design com o usuário.
+2. **`Writing Plans`**: Criação de especificação técnica (`docs/superpowers/specs/`) e plano detalhado com passos atômicos (`docs/superpowers/plans/`).
+3. **`Executing Plans & TDD`**: Implementação dirigida por testes unitários e de integração (Jest + React Testing Library) para cada componente e fluxo.
+4. **`Verification Before Completion`**: Verificação formal de testes (100% de aprovação), validação de linting (`yarn eslint`) e compilação de produção (`yarn build`).
+5. **`Commit Padronizado`**: Commits semânticos contendo histórico claro e atribuição de coautoria.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📁 Estrutura do Projeto
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+src/
+├── assets/
+│   └── github.png             # Imagem do Octocat (marca d'água de fundo)
+├── components/
+│   ├── Button/                # Botão em formato pílula com hover e estados
+│   ├── Footer/                # Rodapé institucional
+│   ├── Header/                # Cabeçalho superior com título GitFind
+│   ├── Input/                 # Campo de entrada reutilizável estilizado
+│   └── ItemList/              # Item da lista de repositórios com link e descrição
+├── pages/
+│   └── Home/                  # Orquestrador de busca, perfil, API e filtro de repositórios
+├── services/
+│   └── Api.js                 # Instância base do Axios para a API do GitHub
+├── index.js                   # Ponto de entrada da aplicação React
+├── setupTests.js              # Configuração de matchers do Jest DOM
+└── styles.js                  # GlobalStyle com styled-components (reset e tipografia)
+```
 
-### `yarn eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🚀 Comandos e Execução
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+O projeto utiliza o **Yarn** como gerenciador de pacotes:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+| Ação | Comando |
+| :--- | :--- |
+| **Instalar dependências** | `yarn install` |
+| **Iniciar dev server** | `yarn start` (acessível em `http://localhost:3000`) |
+| **Compilar para produção** | `yarn build` |
+| **Verificação de lint** | `yarn eslint src/caminho/arquivo.js` |
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 🛠️ Tecnologias Utilizadas
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **React 19**
+- **JavaScript ES6+**
+- **styled-components**
+- **Axios / Fetch API**
+- **Create React App (react-scripts 5)**
