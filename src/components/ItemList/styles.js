@@ -5,7 +5,7 @@ export const ItemContainer = styled.div`
 `;
 
 export const ItemTitleLink = styled.a`
-    color: #539bf5;
+    color: #f1871d;
     font-size: 20px;
     font-weight: 700;
     text-decoration: none;
@@ -17,7 +17,7 @@ export const ItemTitleLink = styled.a`
 `;
 
 export const ItemDescription = styled.p`
-    color: #999999;
+    color: #b9b2b2;
     font-size: 14px;
     margin: 8px 0 16px 0;
     line-height: 1.5;
