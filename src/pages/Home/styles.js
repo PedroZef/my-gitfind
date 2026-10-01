@@ -6,6 +6,8 @@ export const Container = styled.div`
     background-color: #1d2128;
     position: relative;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 `;
 
 export const BackgroundLogo = styled.img`
@@ -33,6 +35,7 @@ export const Content = styled.main`
     flex-direction: column;
     position: relative;
     z-index: 1;
+    flex: 1;
 
     @media (min-width: 1024px) {
         margin-right: 10%;

@@ -71,3 +71,10 @@ O projeto utiliza o **Yarn** como gerenciador de pacotes:
 - **styled-components**
 - **Axios / Fetch API**
 - **Create React App (react-scripts 5)**
+
+---
+
+## 📄 Licença
+
+Este projeto está licenciado sob a licença [MIT](file:///D:/Desafios/react/my-gitfind/LICENSE). Consulte o arquivo `LICENSE` para mais detalhes.
+
