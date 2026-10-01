@@ -1,3 +1,15 @@
+<p align="center">
+  <img src="https://img.shields.io/badge/DIO-Bootcamp-orange?style=for-the-badge&logo=codeforces" alt="DIO Bootcamp" />
+  <img src="https://img.shields.io/badge/AI%20Engineering-Prompt%20Design-blue?style=for-the-badge&logo=openai" alt="Prompt Engineering" />
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white" alt="styled-components" />
+  <img src="https://img.shields.io/badge/GitHub%20API-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub API" />
+  <img src="https://img.shields.io/badge/Yarn-2C8EBB?style=for-the-badge&logo=yarn&logoColor=white" alt="Yarn" />
+  <img src="https://img.shields.io/badge/Status-Concluído-success?style=for-the-badge" alt="Status" />
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License" />
+</p>
+
 # GitFind 🔍
 
 Aplicação web desenvolvida em **React 19** e **JavaScript Moderno** com estilização via **styled-components** para buscar perfis de usuários no GitHub, exibir suas informações detalhadas e listar seus repositórios públicos com filtro dinâmico de repositórios de interesse em tempo real.
